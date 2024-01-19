@@ -1,0 +1,20 @@
+version: '3'
+services:
+  terravision-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - shared-data:/data
+  terravision-api:
+    build:
+      context: ./terravision
+      dockerfile: Dockerfile
+    ports:
+      - '8001:8001'
+    volumes:
+      - shared-data:/data
+volumes:
+  shared-data:
