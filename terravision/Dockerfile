@@ -25,8 +25,7 @@ RUN chmod +x /app/terravision/terravision
 ENV PATH="/app/terravision:${PATH}"
 
 COPY requirements.txt /app
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
 COPY . /app
 
