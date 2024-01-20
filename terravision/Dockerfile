@@ -30,5 +30,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 COPY . /app
 
+# copy examples to shared volume mount (/data)
+COPY ./examples /data/examples
+
 ENTRYPOINT ["python3"]
 CMD ["app.py"]
