@@ -23,7 +23,10 @@ export default function Page() {
       <div className="flex flex-col h-full border border-gray-200 rounded-lg dark:border-gray-800">
         <div className="px-4 py-2 border-b">
           <h2 className="text-lg font-semibold">Text Editor</h2>
-          <TerraformEditor defaultValue={exampleCode} />
+          <TerraformEditor
+            fontFamily={firaCode.style.fontFamily}
+            defaultValue={exampleCode}
+          />
         </div>
         <div className="flex-1 overflow-auto">
           <div className="h-full" />
