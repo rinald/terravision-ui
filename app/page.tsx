@@ -1,4 +1,10 @@
 import Image from 'next/image';
+import fs from 'fs';
+
+const exampleCode = fs.readFileSync(
+  './terravision/examples/aws/lambda/main.tf',
+  'utf-8'
+);
 
 import {
   CollapsibleTrigger,
@@ -6,6 +12,8 @@ import {
   Collapsible
 } from '@/components/ui/collapsible';
 import ConsoleOutput from '@/components/terravision/ConsoleOutput';
+import TerraformEditor from '@/components/terravision/TerraformEditor';
+
 import { cn } from '@/lib/utils';
 import { firaCode } from './layout';
 
@@ -15,6 +23,7 @@ export default function Page() {
       <div className="flex flex-col h-full border border-gray-200 rounded-lg dark:border-gray-800">
         <div className="px-4 py-2 border-b">
           <h2 className="text-lg font-semibold">Text Editor</h2>
+          <TerraformEditor defaultValue={exampleCode} />
         </div>
         <div className="flex-1 overflow-auto">
           <div className="h-full" />
