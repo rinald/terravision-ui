@@ -21,9 +21,10 @@ const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
     startValidation(async () => {
       const value = editorRef.current.getValue();
 
-      const stream = await fetch('/api/terravision/validate').then(
-        res => res.body
-      );
+      const stream = await fetch('/api/terravision/validate', {
+        method: 'POST',
+        body: value
+      }).then(res => res.body);
       await streamConsoleOutput(stream);
     });
   };
@@ -32,9 +33,10 @@ const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
     startGeneration(async () => {
       const value = editorRef.current.getValue();
 
-      const stream = await fetch(
-        '/api/terravision/draw?source=/data/examples/aws/lambda'
-      ).then(res => res.body);
+      const stream = await fetch('/api/terravision/draw?source=/data', {
+        method: 'POST',
+        body: value
+      }).then(res => res.body);
       await streamConsoleOutput(stream);
     });
   };

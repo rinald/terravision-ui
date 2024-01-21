@@ -14,7 +14,6 @@ import {
 import ConsoleOutput from '@/components/terravision/ConsoleOutput';
 import TerraformEditor from '@/components/terravision/TerraformEditor';
 
-import { cn } from '@/lib/utils';
 import { firaCode } from './layout';
 
 export default function Page() {
@@ -40,10 +39,9 @@ export default function Page() {
             height="800"
             src="http://localhost:8001/terravision/output"
             style={{
-              aspectRatio: '1/2',
               objectFit: 'cover'
             }}
-            width="400"
+            width="800"
           />
         </div>
         <Collapsible className="border-t">
@@ -51,13 +49,10 @@ export default function Page() {
             <h3 className="text-lg font-semibold">Console Output</h3>
           </CollapsibleTrigger>
           <CollapsibleContent className="px-4 py-2 bg-gray-800">
-            <code
-              className={cn(
-                'block text-sm text-gray-200 max-h-96 overflow-scroll',
-                firaCode.className
-              )}
-            >
-              <ConsoleOutput />
+            <code className="block text-sm text-gray-200 max-h-96 overflow-scroll">
+              <pre className={firaCode.className}>
+                <ConsoleOutput />
+              </pre>
             </code>
           </CollapsibleContent>
         </Collapsible>

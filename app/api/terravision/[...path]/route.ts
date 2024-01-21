@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 
-export async function GET(
+export async function POST(
   request: NextRequest,
   { params }: { params: { path: string[] } }
 ) {
@@ -8,6 +8,14 @@ export async function GET(
 
   const path = params.path;
   const searchParams = request.nextUrl.searchParams;
+
+  const content = await request.text();
+
+  // write the editor content to the file system
+  await fetch(`${basePath}/write`, {
+    method: 'POST',
+    body: content
+  });
 
   const fullUrl = `${basePath}/${path.join('/')}${
     searchParams ? `?${searchParams}` : ''

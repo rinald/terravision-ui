@@ -41,8 +41,19 @@ resource "aws_iam_role" "iam_for_lambda" {
 
 // create an archive of the lambda function code
 data "archive_file" "lambda_function_payload" {
-  type        = "zip"
-  source_dir  = "${path.module}/src"
+  type = "zip"
+  source {
+    filename = "main.js"
+    content  = <<EOF
+      exports.handler = async (event) => {
+        const response = {
+          statusCode: 200,
+          body: JSON.stringify('Hello from Lambda!'),
+        };
+        return response;
+      };
+    EOF
+  }
   output_path = "${path.module}/builds/lambda.zip"
 }
 

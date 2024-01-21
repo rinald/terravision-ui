@@ -5,7 +5,7 @@ import { useConsoleOutput } from '@/lib/useConsole';
 const ConsoleOutput = () => {
   const { output } = useConsoleOutput();
 
-  return <pre>{output}</pre>;
+  return <>{output}</>;
 };
 
 export default ConsoleOutput;
