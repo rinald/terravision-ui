@@ -27,7 +27,8 @@ const useConsole = () => {
       }
 
       const text = new TextDecoder('utf-8').decode(value);
-      setOutput(output => output + text);
+      const cleanText = text.replace(/\x1B\[[0-9;]*[mG]/g, ''); // Remove color codes
+      setOutput(output => output + cleanText);
 
       return reader.read().then(pump);
     });
