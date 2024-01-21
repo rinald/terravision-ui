@@ -20,19 +20,16 @@ import { firaCode } from './layout';
 export default function Page() {
   return (
     <div className="grid h-screen w-full grid-cols-1 lg:grid-cols-2 gap-4 p-4">
-      <div className="flex flex-col h-full border border-gray-200 rounded-lg dark:border-gray-800">
+      <div className="flex flex-col h-full max-h-[calc(100vh - 2rem)] border border-gray-200 rounded-lg dark:border-gray-800">
         <div className="px-4 py-2 border-b">
           <h2 className="text-lg font-semibold">Text Editor</h2>
-          <TerraformEditor
-            fontFamily={firaCode.style.fontFamily}
-            defaultValue={exampleCode}
-          />
         </div>
-        <div className="flex-1 overflow-auto">
-          <div className="h-full" />
-        </div>
+        <TerraformEditor
+          fontFamily={firaCode.style.fontFamily}
+          defaultValue={exampleCode}
+        />
       </div>
-      <div className="flex flex-col h-full border border-gray-200 rounded-lg dark:border-gray-800">
+      <div className="flex flex-col h-full max-h-[calc(100vh-2rem)] border border-gray-200 rounded-lg dark:border-gray-800">
         <div className="px-4 py-2 border-b">
           <h2 className="text-lg font-semibold">Output</h2>
         </div>
