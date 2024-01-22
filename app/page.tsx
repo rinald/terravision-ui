@@ -1,4 +1,4 @@
-import Image from 'next/image';
+/* eslint-disable @next/next/no-img-element */
 import fs from 'fs';
 
 const exampleCode = fs.readFileSync(
@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/collapsible';
 import ConsoleOutput from '@/components/terravision/ConsoleOutput';
 import TerraformEditor from '@/components/terravision/TerraformEditor';
+import Diagram from '@/components/terravision/Diagram';
 
 import { firaCode } from './layout';
 
@@ -32,18 +33,7 @@ export default function Page() {
         <div className="px-4 py-2 border-b">
           <h2 className="text-lg font-semibold">Output</h2>
         </div>
-        <div className="flex-1 overflow-auto">
-          <Image
-            alt="Output"
-            className="mx-auto my-4"
-            height="800"
-            src="http://localhost:8001/terravision/output"
-            style={{
-              objectFit: 'cover'
-            }}
-            width="800"
-          />
-        </div>
+        <Diagram />
         <Collapsible className="border-t">
           <CollapsibleTrigger className="px-4 py-2 cursor-pointer">
             <h3 className="text-lg font-semibold">Console Output</h3>

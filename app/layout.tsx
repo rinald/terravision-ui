@@ -3,6 +3,7 @@ import { Fira_Code, Inter } from 'next/font/google';
 
 import './globals.css';
 import { ConsoleOutputProvider } from '@/lib/useConsole';
+import { TransitionsProvider } from '@/lib/useTransitions';
 
 export const inter = Inter({ subsets: ['latin'] });
 export const firaCode = Fira_Code({ subsets: ['latin'] });
@@ -20,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ConsoleOutputProvider>{children}</ConsoleOutputProvider>
+        <ConsoleOutputProvider>
+          <TransitionsProvider>{children}</TransitionsProvider>
+        </ConsoleOutputProvider>
       </body>
     </html>
   );

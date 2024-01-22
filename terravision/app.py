@@ -50,6 +50,19 @@ def terravision():
     except subprocess.CalledProcessError as e:
         return jsonify(error=str(e)), 500
 
+@app.route('/terravision/graph', methods=['GET'])
+def terravision_graph():
+    try:
+        return app.response_class(
+            stream_process(
+                'mkdir -p /app/output && terraform graph | tee /dev/stderr | dot -Tpng > /app/output/diagram.dot.png',
+                cwd='/data',
+                shell=True
+            )
+        )
+    except subprocess.CalledProcessError as e:
+        return jsonify(error=str(e)), 500
+
 
 @app.route("/terravision/write", methods=["POST"])
 def terravision_write():

@@ -1,9 +1,10 @@
 'use client';
 
-import { useRef, useTransition } from 'react';
+import { useRef } from 'react';
 import { Editor } from '@monaco-editor/react';
 
 import { useConsoleOutput } from '@/lib/useConsole';
+import { useTransitions } from '@/lib/useTransitions';
 
 type Props = {
   defaultValue: string;
@@ -12,8 +13,10 @@ type Props = {
 
 const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
   const editorRef = useRef<any>(null);
-  const [validationPending, startValidation] = useTransition();
-  const [generationPending, startGeneration] = useTransition();
+  const {
+    validationTransition: [, startValidation],
+    generationTransition: [, startGeneration]
+  } = useTransitions();
 
   const { streamConsoleOutput } = useConsoleOutput();
 
@@ -22,6 +25,18 @@ const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
       const value = editorRef.current.getValue();
 
       const stream = await fetch('/api/terravision/validate', {
+        method: 'POST',
+        body: value
+      }).then(res => res.body);
+      await streamConsoleOutput(stream);
+    });
+  };
+
+  const handleGraph = () => {
+    startGeneration(async () => {
+      const value = editorRef.current.getValue();
+
+      const stream = await fetch('/api/terravision/graph', {
         method: 'POST',
         body: value
       }).then(res => res.body);
@@ -63,6 +78,12 @@ const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
           onClick={handleValidation}
         >
           Validate
+        </button>
+        <button
+          className="px-4 py-2 rounded-lg bg-violet-800 text-white"
+          onClick={handleGraph}
+        >
+          Graph
         </button>
         <button
           className="px-4 py-2 rounded-lg bg-violet-800 text-white"

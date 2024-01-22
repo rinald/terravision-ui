@@ -21,7 +21,7 @@ const useConsole = () => {
 
     const reader = stream?.getReader();
 
-    reader?.read().then(function pump({ done, value }): any {
+    const pump = async ({ done, value }: any) => {
       if (done) {
         return;
       }
@@ -30,8 +30,10 @@ const useConsole = () => {
       const cleanText = text.replace(/\x1B\[[0-9;]*[mG]/g, ''); // Remove color codes
       setOutput(output => output + cleanText);
 
-      return reader.read().then(pump);
-    });
+      await reader?.read().then(pump);
+    };
+
+    return await reader?.read().then(pump);
   };
 
   return {
