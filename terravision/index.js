@@ -1,27 +1,5 @@
 import fs from 'fs';
 import process from 'process';
-import { AwsArchitecture } from '@aws/pdk/aws-arch/index.js';
-
-const extractResourceIdentifiers = () => {
-  const resourceIdentifiers = {};
-
-  const categories = Object.values(AwsArchitecture.categories);
-
-  for (const category of categories) {
-    for (const service of category.categoryServices()) {
-      for (const resource of service.serviceResources()) {
-        resourceIdentifiers[resource.cfnResourceType.toLowerCase()] =
-          resource.icon('png');
-      }
-    }
-  }
-
-  // write to file
-  fs.writeFileSync(
-    '/app/resourceIdentifiers.json',
-    JSON.stringify(resourceIdentifiers, null, 2)
-  );
-};
 
 async function readGraphInput() {
   let graph = '';
@@ -80,5 +58,4 @@ async function transformResourceGraph() {
   console.log(graph);
 }
 
-extractResourceIdentifiers();
 transformResourceGraph();
