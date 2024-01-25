@@ -44,22 +44,26 @@ async function transformResourceGraph() {
     fs.readFileSync('/app/resourceIdentifiers.json', 'utf8')
   );
 
+  // load terraform to aws resource mapping
+  const terraformToAws = JSON.parse(
+    fs.readFileSync('/app/terraformToAws.json', 'utf8')
+  );
+
   const resourcePattern = /"aws\w+\.\w+"/g;
 
   const resourceIdentifiersInGraph = new Set(graph.match(resourcePattern));
 
   for (const identifier of resourceIdentifiersInGraph.values()) {
-    const terraformIdentifier = identifier.split('.')[0];
-    const resourceIdentifier = terraformIdentifier
-      .replaceAll('_', '::')
-      .replaceAll('"', '');
+    const terraformIdentifier = identifier.split('.')[0].replaceAll('"', '');
+    const resourceIdentifier = terraformToAws[terraformIdentifier];
+
+    graph = graph.replaceAll(identifier, `"${resourceIdentifier}"`);
 
     if (resourceIdentifier in resourceIdentifiers) {
       const icon = resourceIdentifiers[resourceIdentifier];
-      graph = graph.replaceAll(identifier, `"${resourceIdentifier}"`);
       graph = graph.replace(
         `label="${resourceIdentifier}"`,
-        `label="", image="${icon}", shape=none, width=2, height=2, fixedsize=true`
+        `label=< <table border="0" cellborder="1"><tr><td bgcolor="white">${resourceIdentifier}</td></tr></table> >, labelloc="b" image="${icon}", shape=none, width=2, height=2, fixedsize=true`
       );
     }
   }
@@ -69,7 +73,7 @@ async function transformResourceGraph() {
   lines.splice(
     2,
     0,
-    `  imagepath="/app/node_modules/@aws/pdk/assets/aws-arch"`
+    `  imagepath="/app/node_modules/@aws/pdk/assets/aws-arch"\n  nodesep=2\n  ranksep=1`
   );
   graph = lines.join('\n');
 
