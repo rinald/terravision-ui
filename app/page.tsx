@@ -38,8 +38,8 @@ export default function Page() {
           <CollapsibleTrigger className="px-4 py-2 cursor-pointer">
             <h3 className="text-lg font-semibold">Console Output</h3>
           </CollapsibleTrigger>
-          <CollapsibleContent className="px-4 py-2 bg-gray-800">
-            <code className="block text-sm text-gray-200 max-h-96 overflow-scroll">
+          <CollapsibleContent className="bg-gray-800">
+            <code className="px-4 py-2 block text-sm text-gray-200 max-h-96 overflow-scroll">
               <pre className={firaCode.className}>
                 <ConsoleOutput />
               </pre>

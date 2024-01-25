@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-def stream_process(command, cwd=os.getcwd(), shell=False):
+def stream_process(command, cwd=os.getcwd(), shell=True):
     process = subprocess.Popen(
         command,
         stdout=subprocess.PIPE,
@@ -36,28 +36,21 @@ def terravision():
     try:
         return app.response_class(
             stream_process(
-                [
-                    "terravision",
-                    "draw",
-                    "--source",
-                    source,
-                    "--outfile",
-                    "output/diagram",
-                ]
+                f"terravision draw --source {source} --outfile output/diagram",
             ),
             mimetype="text/plain",
         )
     except subprocess.CalledProcessError as e:
         return jsonify(error=str(e)), 500
 
-@app.route('/terravision/graph', methods=['GET'])
+
+@app.route("/terravision/graph", methods=["GET"])
 def terravision_graph():
     try:
         return app.response_class(
             stream_process(
-                'mkdir -p /app/output && terraform graph | tee /dev/stderr | dot -Tpng > /app/output/diagram.dot.png',
-                cwd='/data',
-                shell=True
+                'mkdir -p /app/output && terraform graph | sed s/"RL"/"TB"/g | node /app/index.js | tee /dev/stderr | dot -Tpng > /app/output/diagram.dot.png',
+                cwd="/data",
             )
         )
     except subprocess.CalledProcessError as e:
@@ -74,9 +67,7 @@ def terravision_write():
 def terravision_validate():
     try:
         return app.response_class(
-            stream_process(
-                "terraform init && terraform validate", cwd="/data", shell=True
-            ),
+            stream_process("terraform init && terraform validate", cwd="/data"),
             mimetype="text/plain",
         )
     except subprocess.CalledProcessError as e:
