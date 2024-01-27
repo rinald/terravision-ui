@@ -4,21 +4,22 @@ import { useState, createContext, useContext } from 'react';
 
 type Props = {
   output: string;
+  clearOutput: () => void;
   streamConsoleOutput: (stream: ReadableStream | null) => Promise<void>;
 };
 
 const ConsoleOutputContext = createContext<Props>({
   output: '',
+  clearOutput: () => {},
   streamConsoleOutput: (stream: ReadableStream | null) => Promise.resolve()
 });
 
 const useConsole = () => {
   const [output, setOutput] = useState('');
 
-  const streamConsoleOutput = async (stream: ReadableStream | null) => {
-    // clear output
-    setOutput('');
+  const clearOutput = () => setOutput('');
 
+  const streamConsoleOutput = async (stream: ReadableStream | null) => {
     const reader = stream?.getReader();
 
     const pump = async ({ done, value }: any) => {
@@ -38,6 +39,7 @@ const useConsole = () => {
 
   return {
     output,
+    clearOutput,
     streamConsoleOutput
   };
 };

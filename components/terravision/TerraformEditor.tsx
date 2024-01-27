@@ -18,9 +18,11 @@ const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
     generationTransition: [, startGeneration]
   } = useTransitions();
 
-  const { streamConsoleOutput } = useConsoleOutput();
+  const { clearOutput, streamConsoleOutput } = useConsoleOutput();
 
   const handleValidation = () => {
+    clearOutput();
+
     startValidation(async () => {
       const value = editorRef.current.getValue();
 
@@ -33,6 +35,8 @@ const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
   };
 
   const handleGraph = () => {
+    clearOutput();
+
     startGeneration(async () => {
       const value = editorRef.current.getValue();
 
@@ -45,6 +49,8 @@ const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
   };
 
   const handleGeneration = () => {
+    clearOutput();
+
     startGeneration(async () => {
       const value = editorRef.current.getValue();
 
