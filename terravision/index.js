@@ -31,17 +31,21 @@ async function transformResourceGraph() {
 
   const resourceIdentifiersInGraph = new Set(graph.match(resourcePattern));
 
-  for (const identifier of resourceIdentifiersInGraph.values()) {
+  for (const identifier of resourceIdentifiersInGraph) {
     const terraformIdentifier = identifier.split('.')[0].replaceAll('"', '');
+    const terraformName = identifier.split('.')[1].replaceAll('"', '');
     const resourceIdentifier = terraformToAws[terraformIdentifier];
 
-    graph = graph.replaceAll(identifier, `"${resourceIdentifier}"`);
+    graph = graph.replaceAll(
+      identifier,
+      `"${resourceIdentifier}.${terraformName}"`
+    );
 
     if (resourceIdentifier in resourceIdentifiers) {
       const icon = resourceIdentifiers[resourceIdentifier];
       graph = graph.replace(
-        `label="${resourceIdentifier}"`,
-        `label=< <table border="0" cellborder="1"><tr><td bgcolor="white">${resourceIdentifier}</td></tr></table> >, labelloc="b" image="${icon}", shape=none, width=2, height=2, fixedsize=true`
+        `label="${resourceIdentifier}.${terraformName}"`,
+        `label=< <table border="0" cellborder="1"><tr><td bgcolor="white">${resourceIdentifier}</td></tr><tr><td bgcolor="white">${terraformName}</td></tr></table> >, labelloc="b" image="${icon}", shape=none, width=2.5, height=2.5, fixedsize=true`
       );
     }
   }
