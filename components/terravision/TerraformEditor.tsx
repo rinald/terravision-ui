@@ -1,7 +1,8 @@
 'use client';
 
-import { useRef } from 'react';
 import { Editor } from '@monaco-editor/react';
+import type { OnMount } from '@monaco-editor/react';
+import { useRef } from 'react';
 
 import { useConsoleOutput } from '@/lib/useConsole';
 import { useTransitions } from '@/lib/useTransitions';
@@ -11,8 +12,11 @@ type Props = {
   fontFamily: string;
 };
 
+// extract editor type
+type EditorType = Parameters<OnMount>[0];
+
 const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<EditorType | null>(null);
   const {
     validationTransition: [, startValidation],
     generationTransition: [, startGeneration]
@@ -24,7 +28,7 @@ const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
     clearOutput();
 
     startValidation(async () => {
-      const value = editorRef.current.getValue();
+      const value = editorRef.current?.getValue();
 
       const stream = await fetch('/api/terravision/validate', {
         method: 'POST',
@@ -38,7 +42,7 @@ const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
     clearOutput();
 
     startGeneration(async () => {
-      const value = editorRef.current.getValue();
+      const value = editorRef.current?.getValue();
 
       const stream = await fetch('/api/terravision/graph', {
         method: 'POST',
@@ -52,7 +56,7 @@ const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
     clearOutput();
 
     startGeneration(async () => {
-      const value = editorRef.current.getValue();
+      const value = editorRef.current?.getValue();
 
       const stream = await fetch('/api/terravision/draw?source=/data', {
         method: 'POST',
@@ -80,18 +84,21 @@ const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
       />
       <div className="flex gap-4 py-3 justify-center items-center border-t bottom-0 w-full bg-white">
         <button
+          type="button"
           className="px-4 py-2 rounded-lg bg-violet-800 text-white"
           onClick={handleValidation}
         >
           Validate
         </button>
         <button
+          type="button"
           className="px-4 py-2 rounded-lg bg-violet-800 text-white"
           onClick={handleGraph}
         >
           Graph
         </button>
         <button
+          type="button"
           className="px-4 py-2 rounded-lg bg-violet-800 text-white"
           onClick={handleGeneration}
         >
