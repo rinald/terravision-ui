@@ -3,6 +3,15 @@
   "formatter": {
     "indentStyle": "space"
   },
+  "linter": {
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noControlCharactersInRegex": "warn",
+        "noExplicitAny": "warn"
+      }
+    }
+  },
   "javascript": {
     "formatter": {
       "arrowParentheses": "asNeeded",
