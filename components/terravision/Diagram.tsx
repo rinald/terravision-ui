@@ -16,7 +16,7 @@ const Diagram = () => {
       ) : (
         <img
           alt="Output"
-          className="mx-auto my-4"
+          className="mx-auto my-4 p-8"
           height="800"
           src={`http://localhost:8001/terravision/output?timestamp=${Date.now()}`}
           style={{

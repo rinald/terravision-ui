@@ -6,47 +6,61 @@ const exampleCode = fs.readFileSync(
   'utf-8'
 );
 
+import { cn } from '@/lib/utils';
+
 import {
-  CollapsibleTrigger,
+  Collapsible,
   CollapsibleContent,
-  Collapsible
+  CollapsibleTrigger
 } from '@/components/ui/collapsible';
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup
+} from '@/components/ui/resizable';
+
 import ConsoleOutput from '@/components/terravision/ConsoleOutput';
-import TerraformEditor from '@/components/terravision/TerraformEditor';
 import Diagram from '@/components/terravision/Diagram';
+import TerraformEditor from '@/components/terravision/TerraformEditor';
 
 import { firaCode } from './layout';
 
 export default function Page() {
   return (
-    <div className="grid h-screen w-full grid-cols-1 lg:grid-cols-2 gap-4 p-4">
-      <div className="flex flex-col h-full max-h-[calc(100vh - 2rem)] border border-gray-200 rounded-lg dark:border-gray-800">
-        <div className="px-4 py-2 border-b">
-          <h2 className="text-lg font-semibold">Text Editor</h2>
-        </div>
-        <TerraformEditor
-          fontFamily={firaCode.style.fontFamily}
-          defaultValue={exampleCode}
-        />
-      </div>
-      <div className="flex flex-col h-full max-h-[calc(100vh-2rem)] border border-gray-200 rounded-lg dark:border-gray-800">
-        <div className="px-4 py-2 border-b">
-          <h2 className="text-lg font-semibold">Output</h2>
-        </div>
-        <Diagram />
-        <Collapsible className="border-t">
-          <CollapsibleTrigger className="px-4 py-2 cursor-pointer">
-            <h3 className="text-lg font-semibold">Console Output</h3>
-          </CollapsibleTrigger>
-          <CollapsibleContent className="bg-gray-800">
-            <code className="px-4 py-2 block text-sm text-gray-200 max-h-96 overflow-scroll">
-              <pre className={firaCode.className}>
-                <ConsoleOutput />
-              </pre>
-            </code>
-          </CollapsibleContent>
-        </Collapsible>
-      </div>
-    </div>
+    <main className="h-screen">
+      <ResizablePanelGroup
+        direction="horizontal"
+        className="w-full border border-gray-200 rounded-lg !flex-col md:!flex-row"
+      >
+        <ResizablePanel defaultSize={50} className="flex flex-col">
+          <div className="border-b-2 p-2">
+            <h2 className="text-lg font-semibold">Text Editor</h2>
+          </div>
+          <TerraformEditor
+            fontFamily={firaCode.style.fontFamily}
+            defaultValue={exampleCode}
+          />
+        </ResizablePanel>
+        <ResizableHandle withHandle className="hidden md:flex" />
+        <ResizablePanel defaultSize={50} className="flex flex-col">
+          <div className="border-b-2 border-t-2 md:border-t-0 p-2">
+            <h2 className="text-lg font-semibold">Output</h2>
+          </div>
+          <Diagram />
+          <Collapsible className="border-t">
+            <CollapsibleTrigger className="px-4 py-2 cursor-pointer">
+              <h3 className="text-lg font-semibold">Console Output</h3>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="bg-gray-800">
+              <code className="block text-sm text-gray-200 max-h-96 overflow-scroll">
+                <pre className={cn(firaCode.className, 'px-4 py-2')}>
+                  <ConsoleOutput />
+                </pre>
+              </code>
+            </CollapsibleContent>
+          </Collapsible>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </main>
   );
 }

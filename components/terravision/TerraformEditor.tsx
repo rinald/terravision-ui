@@ -69,7 +69,7 @@ const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
   return (
     <div className="flex flex-col relative">
       <Editor
-        height="85vh"
+        height="88vh"
         defaultLanguage="hcl"
         defaultValue={defaultValue}
         onMount={editor => {
@@ -79,27 +79,30 @@ const TerraformEditor = ({ defaultValue, fontFamily }: Props) => {
           fontFamily: fontFamily,
           fontSize: 14,
           fontWeight: '500',
-          fontLigatures: true
+          fontLigatures: true,
+          minimap: {
+            enabled: false
+          }
         }}
       />
       <div className="flex gap-4 py-3 justify-center items-center border-t bottom-0 w-full bg-white">
         <button
           type="button"
-          className="px-4 py-2 rounded-lg bg-violet-800 text-white"
+          className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           onClick={handleValidation}
         >
           Validate
         </button>
         <button
           type="button"
-          className="px-4 py-2 rounded-lg bg-violet-800 text-white"
+          className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           onClick={handleGraph}
         >
           Graph
         </button>
         <button
           type="button"
-          className="px-4 py-2 rounded-lg bg-violet-800 text-white"
+          className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           onClick={handleGeneration}
         >
           Generate
