@@ -21,6 +21,7 @@ import {
 
 import ConsoleOutput from '@/components/terravision/ConsoleOutput';
 import Diagram from '@/components/terravision/Diagram';
+import DownloadButton from '@/components/terravision/DownloadButton';
 import TerraformEditor from '@/components/terravision/TerraformEditor';
 
 import { firaCode } from './layout';
@@ -43,8 +44,9 @@ export default function Page() {
         </ResizablePanel>
         <ResizableHandle withHandle className="hidden md:flex" />
         <ResizablePanel defaultSize={50} className="flex flex-col">
-          <div className="border-b-2 border-t-2 md:border-t-0 p-2">
+          <div className="flex justify-between border-b-2 border-t-2 md:border-t-0 p-2">
             <h2 className="text-lg font-semibold">Output</h2>
+            <DownloadButton />
           </div>
           <Diagram />
           <Collapsible className="border-t">
