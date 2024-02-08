@@ -5,8 +5,7 @@ This project is a user interface for [Terravision](https://github.com/patrickchu
 ## Table of Contents
 
 - [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
+- [Development](#development)
 - [License](#license)
 
 ### Prerequisites
@@ -32,12 +31,13 @@ To run the app in development mode, follow these steps:
 1. Install the projects dependencies: `pnpm install`
 2. Start the development server: `pnpm dev`
 
-## Project Structure
+## Screenshots
 
-- `app/` - Contains the main application code.
-- `components/` - Contains reusable React components.
-- `lib/` - Contains utility functions and custom hooks.
-- `terravision/` - Contains Python code for the Terravision application.
+### Application
+![alt Terravision UI](./public/terravision-ui.png)
+
+### Diagram
+![alt Example architecture diagram](./public/diagram.png)
 
 ## License
 
