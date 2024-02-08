@@ -1,10 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import fs from 'fs';
-
-const exampleCode = fs.readFileSync(
-  './terravision/examples/aws/lambda/main.tf',
-  'utf-8'
-);
 
 import { cn } from '@/lib/utils';
 
@@ -24,6 +18,7 @@ import Diagram from '@/components/terravision/Diagram';
 import DownloadButton from '@/components/terravision/DownloadButton';
 import TerraformEditor from '@/components/terravision/TerraformEditor';
 
+import files from '@/lib/files';
 import { firaCode } from './layout';
 
 export default function Page() {
@@ -33,15 +28,7 @@ export default function Page() {
         direction="horizontal"
         className="w-full border border-gray-200 rounded-lg !flex-col md:!flex-row"
       >
-        <ResizablePanel defaultSize={50} className="flex flex-col">
-          <div className="border-b-2 p-2">
-            <h2 className="text-lg font-semibold">Text Editor</h2>
-          </div>
-          <TerraformEditor
-            fontFamily={firaCode.style.fontFamily}
-            defaultValue={exampleCode}
-          />
-        </ResizablePanel>
+        <TerraformEditor files={files} fontFamily={firaCode.className} />
         <ResizableHandle withHandle className="hidden md:flex" />
         <ResizablePanel defaultSize={50} className="flex flex-col">
           <div className="flex justify-between border-b-2 border-t-2 md:border-t-0 p-2">
