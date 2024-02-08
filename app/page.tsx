@@ -28,7 +28,7 @@ export default function Page() {
         direction="horizontal"
         className="w-full border border-gray-200 rounded-lg !flex-col md:!flex-row"
       >
-        <TerraformEditor files={files} fontFamily={firaCode.className} />
+        <TerraformEditor files={files} fontFamily={firaCode.style.fontFamily} />
         <ResizableHandle withHandle className="hidden md:flex" />
         <ResizablePanel defaultSize={50} className="flex flex-col">
           <div className="flex justify-between border-b-2 border-t-2 md:border-t-0 p-2">

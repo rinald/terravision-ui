@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, json, jsonify, send_from_directory
 from flask_cors import CORS
 import os, subprocess
 
@@ -23,8 +23,8 @@ def stream_process(command, cwd=os.getcwd(), shell=True):
         yield line
 
 
-def write_file(content):
-    path = os.path.join(os.sep, "data", "main.tf")
+def write_file(file_name, content):
+    path = os.path.join(os.sep, "data", file_name)
 
     with open(path, "w+") as f:
         f.write(content)
@@ -59,7 +59,11 @@ def terravision_graph():
 
 @app.route("/terravision/write", methods=["POST"])
 def terravision_write():
-    write_file(request.data.decode("utf-8"))
+    data = json.loads(request.data)
+    
+    for file_name in ["main.tf", "variables.tf", "terraform.tfvars"]:
+        write_file(file_name, data[file_name]["value"])
+
     return jsonify(success=True)
 
 

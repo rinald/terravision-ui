@@ -1,7 +1,7 @@
 'use client';
 
 import { Editor } from '@monaco-editor/react';
-import type { OnMount } from '@monaco-editor/react';
+import type { OnChange, OnMount } from '@monaco-editor/react';
 
 import { Files } from '@/lib/files';
 import { useRef, useState } from 'react';
@@ -22,6 +22,8 @@ type EditorType = Parameters<OnMount>[0];
 
 const TerraformEditor = ({ files, fontFamily }: Props) => {
   const [fileName, setFileName] = useState<keyof Files>('main.tf');
+  const [content, setContent] = useState(files);
+
   const editorRef = useRef<EditorType | null>(null);
   const {
     validationTransition: [, startValidation],
@@ -30,15 +32,20 @@ const TerraformEditor = ({ files, fontFamily }: Props) => {
 
   const { clearOutput, streamConsoleOutput } = useConsoleOutput();
 
+  const handleChange: OnChange = value => {
+    setContent(content => {
+      content[fileName].value = value ?? '';
+      return content;
+    });
+  };
+
   const handleValidation = () => {
     clearOutput();
 
     startValidation(async () => {
-      const value = editorRef.current?.getValue();
-
       const stream = await fetch('/api/terravision/validate', {
         method: 'POST',
-        body: value
+        body: JSON.stringify(content)
       }).then(res => res.body);
       await streamConsoleOutput(stream);
     });
@@ -48,11 +55,9 @@ const TerraformEditor = ({ files, fontFamily }: Props) => {
     clearOutput();
 
     startGeneration(async () => {
-      const value = editorRef.current?.getValue();
-
       const stream = await fetch('/api/terravision/graph', {
         method: 'POST',
-        body: value
+        body: JSON.stringify(content)
       }).then(res => res.body);
       await streamConsoleOutput(stream);
     });
@@ -62,11 +67,9 @@ const TerraformEditor = ({ files, fontFamily }: Props) => {
     clearOutput();
 
     startGeneration(async () => {
-      const value = editorRef.current?.getValue();
-
       const stream = await fetch('/api/terravision/draw?source=/data', {
         method: 'POST',
-        body: value
+        body: JSON.stringify(content)
       }).then(res => res.body);
       await streamConsoleOutput(stream);
     });
@@ -104,6 +107,7 @@ const TerraformEditor = ({ files, fontFamily }: Props) => {
           onMount={editor => {
             editorRef.current = editor;
           }}
+          onChange={handleChange}
           options={{
             fontFamily: fontFamily,
             fontSize: 14,
@@ -117,21 +121,21 @@ const TerraformEditor = ({ files, fontFamily }: Props) => {
         <div className="flex gap-4 py-3 justify-center items-center border-t bottom-0 w-full bg-white">
           <button
             type="button"
-            className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="rounded-md bg-indigo-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             onClick={handleValidation}
           >
             Validate
           </button>
           <button
             type="button"
-            className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="rounded-md bg-indigo-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             onClick={handleGraph}
           >
             Graph
           </button>
           <button
             type="button"
-            className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="rounded-md bg-indigo-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             onClick={handleGeneration}
           >
             Generate

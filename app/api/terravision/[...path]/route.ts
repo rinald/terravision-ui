@@ -1,3 +1,5 @@
+import { Files } from '@/lib/files';
+
 import { NextRequest } from 'next/server';
 
 export async function POST(
@@ -9,12 +11,12 @@ export async function POST(
   const path = params.path;
   const searchParams = request.nextUrl.searchParams;
 
-  const content = await request.text();
+  const content: Files = await request.json();
 
   // write the editor content to the file system
   await fetch(`${basePath}/write`, {
     method: 'POST',
-    body: content
+    body: JSON.stringify(content)
   });
 
   const fullUrl = `${basePath}/${path.join('/')}${
