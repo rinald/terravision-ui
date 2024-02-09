@@ -19,7 +19,7 @@ import DownloadButton from '@/components/terravision/DownloadButton';
 import TerraformEditor from '@/components/terravision/TerraformEditor';
 
 import files from '@/lib/files';
-import { firaCode } from './layout';
+import { firaCode } from './fonts';
 
 export default function Page() {
   return (

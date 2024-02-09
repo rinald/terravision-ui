@@ -1,12 +1,9 @@
 import type { Metadata } from 'next';
-import { Fira_Code, Inter } from 'next/font/google';
 
 import { ConsoleOutputProvider } from '@/lib/useConsole';
 import { TransitionsProvider } from '@/lib/useTransitions';
+import { inter } from './fonts';
 import './globals.css';
-
-export const inter = Inter({ subsets: ['latin'] });
-export const firaCode = Fira_Code({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Terravision UI',
