@@ -27,7 +27,7 @@ async function transformResourceGraph() {
     fs.readFileSync('/app/terraformToAws.json', 'utf8')
   );
 
-  const resourcePattern = /"aws\w+\.\w+"/g;
+  const resourcePattern = /aws\w+\.\w+/g;
 
   const resourceIdentifiersInGraph = new Set(graph.match(resourcePattern));
 
@@ -38,12 +38,25 @@ async function transformResourceGraph() {
 
     graph = graph.replaceAll(
       identifier,
-      `"${resourceIdentifier}.${terraformName}"`
+      `${resourceIdentifier}.${terraformName}`
     );
 
+    let icon;
+
     if (resourceIdentifier in resourceIdentifiers) {
-      const icon = resourceIdentifiers[resourceIdentifier];
-      graph = graph.replace(
+      icon = resourceIdentifiers[resourceIdentifier];
+    } else if (resourceIdentifier) {
+      // find generic icon
+      const [, service] = resourceIdentifier.split('::');
+      icon = Object.entries(resourceIdentifiers).find(
+        ([key, value]) =>
+          key.startsWith(`aws::${service}`) &&
+          value.endsWith('service_icon.png')
+      )?.[1];
+    }
+
+    if (icon) {
+      graph = graph.replaceAll(
         `label="${resourceIdentifier}.${terraformName}"`,
         `label=< <table border="0" cellborder="1"><tr><td bgcolor="white">${resourceIdentifier}</td></tr><tr><td bgcolor="white">${terraformName}</td></tr></table> >, labelloc="b" image="${icon}", shape=none, width=2.5, height=2.5, fixedsize=true`
       );

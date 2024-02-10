@@ -16,7 +16,7 @@ const Diagram = () => {
       {generationPending ? (
         <DiagramSkeleton />
       ) : (
-        <TransformWrapper>
+        <TransformWrapper maxScale={25}>
           <TransformComponent
             wrapperClass="!w-full !h-full cursor-move"
             contentClass="!w-full !h-full"
