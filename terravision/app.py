@@ -49,7 +49,7 @@ def terravision_graph():
     try:
         return app.response_class(
             stream_process(
-                'mkdir -p /app/output && terraform graph | sed s/"RL"/"TB"/g | node /app/index.js | tee /dev/stderr | dot -Tpng > /app/output/diagram.dot.png',
+                'mkdir -p /app/output && terraform graph | sed s/"RL"/"TB"/g | node /app/index.js | dot -Tpng > /app/output/diagram.dot.png',
                 cwd="/data",
             )
         )
@@ -60,7 +60,7 @@ def terravision_graph():
 @app.route("/terravision/write", methods=["POST"])
 def terravision_write():
     data = json.loads(request.data)
-    
+
     for file_name in ["main.tf", "variables.tf", "terraform.tfvars"]:
         write_file(file_name, data[file_name]["value"])
 
