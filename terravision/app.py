@@ -24,7 +24,7 @@ def stream_process(command, cwd=os.getcwd(), shell=True):
 
 
 def write_file(file_name, content):
-    path = os.path.join(os.sep, "data", file_name)
+    path = os.path.join('data', file_name)
 
     with open(path, "w+") as f:
         f.write(content)
@@ -49,8 +49,8 @@ def terravision_graph():
     try:
         return app.response_class(
             stream_process(
-                'mkdir -p /app/output && terraform graph | sed s/"RL"/"TB"/g | node /app/index.js | dot -Tpng > /app/output/diagram.dot.png',
-                cwd="/data",
+                'mkdir -p ./output && terraform graph | sed s/"RL"/"TB"/g | node ../index.js | tee /dev/stderr | dot -Tpng > ./output/diagram.dot.png',
+                cwd="./data",
             )
         )
     except subprocess.CalledProcessError as e:
@@ -71,7 +71,7 @@ def terravision_write():
 def terravision_validate():
     try:
         return app.response_class(
-            stream_process("terraform init && terraform validate", cwd="/data"),
+            stream_process("terraform init && terraform validate", cwd="./data"),
             mimetype="text/plain",
         )
     except subprocess.CalledProcessError as e:
@@ -91,7 +91,7 @@ def terravision_help():
 
 @app.route("/terravision/output")
 def terravision_output():
-    return send_from_directory("output", "diagram.dot.png")
+    return send_from_directory("./data/output", "diagram.dot.png")
 
 
 if __name__ == "__main__":

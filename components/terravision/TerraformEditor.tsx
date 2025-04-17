@@ -63,18 +63,6 @@ const TerraformEditor = ({ files, fontFamily }: Props) => {
     });
   };
 
-  const handleGeneration = () => {
-    clearOutput();
-
-    startGeneration(async () => {
-      const stream = await fetch('/api/terravision/draw?source=/data', {
-        method: 'POST',
-        body: JSON.stringify(content)
-      }).then(res => res.body);
-      await streamConsoleOutput(stream);
-    });
-  };
-
   return (
     <ResizablePanel defaultSize={50} className="flex flex-col">
       <div className="border-b-2 p-2">
@@ -132,13 +120,6 @@ const TerraformEditor = ({ files, fontFamily }: Props) => {
             onClick={handleGraph}
           >
             Graph
-          </button>
-          <button
-            type="button"
-            className="rounded-md bg-indigo-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            onClick={handleGeneration}
-          >
-            Generate
           </button>
         </div>
       </div>

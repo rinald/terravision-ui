@@ -19,12 +19,12 @@ async function transformResourceGraph() {
 
   // load resource identifiers from json file
   const resourceIdentifiers = JSON.parse(
-    fs.readFileSync('/app/resourceIdentifiers.json', 'utf8')
+    fs.readFileSync('../resourceIdentifiers.json', 'utf8')
   );
 
   // load terraform to aws resource mapping
   const terraformToAws = JSON.parse(
-    fs.readFileSync('/app/terraformToAws.json', 'utf8')
+    fs.readFileSync('../terraformToAws.json', 'utf8')
   );
 
   const resourcePattern = /aws\w+\.\w+/g;
@@ -34,7 +34,8 @@ async function transformResourceGraph() {
   for (const identifier of resourceIdentifiersInGraph) {
     const terraformIdentifier = identifier.split('.')[0].replaceAll('"', '');
     const terraformName = identifier.split('.')[1].replaceAll('"', '');
-    const resourceIdentifier = terraformToAws[terraformIdentifier];
+    const resourceIdentifier =
+      terraformToAws[terraformIdentifier] ?? terraformIdentifier;
 
     graph = graph.replaceAll(
       identifier,
@@ -68,7 +69,7 @@ async function transformResourceGraph() {
   lines.splice(
     2,
     0,
-    `  imagepath="/app/node_modules/@aws/pdk/assets/aws-arch"\n  nodesep=2\n  ranksep=1`
+    `  imagepath="../node_modules/@aws/pdk/assets/aws-arch"\n  nodesep=2\n  ranksep=1`
   );
   graph = lines.join('\n');
 

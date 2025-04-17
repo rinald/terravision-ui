@@ -15,19 +15,6 @@ RUN apt-get install -y nodejs
 
 WORKDIR /app
 
-# clone terravision repo
-RUN git clone https://github.com/patrickchugh/terravision.git
-
-# intall terravision dependencies
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install -r /app/terravision/requirements.txt
-
-# mark terravision script as executable
-RUN chmod +x /app/terravision/terravision
-
-# add terravision to path
-ENV PATH="/app/terravision:${PATH}"
-
 COPY . /app
 RUN pip install -r requirements.txt
 RUN npm install
